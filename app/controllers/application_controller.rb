@@ -1,4 +1,7 @@
 class ApplicationController < Sinatra::Base
+
+  set :views, Proc.new { File.join(root, "../views/") }
+
   configure do
     set :public_folder, 'public'
     set :views, 'app/views'
@@ -45,4 +48,10 @@ class ApplicationController < Sinatra::Base
     @recipe.save
     redirect to "/recipes/#{@recipe.id}"
   end 
+
+  patch "/recipes/:id" do
+    @recipe = Recipe.find(params[:id])
+    @recipe.update(params[:recipe])
+    redirect to "/recipes/#{ @recipe.id }"
+  end
 end
